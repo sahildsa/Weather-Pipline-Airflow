@@ -1,0 +1,7 @@
+FROM apache/spark-py:latest
+USER root
+WORKDIR /app
+COPY requirement.txt .
+RUN pip install --no-cache-dir -r requirement.txt
+COPY src/my_pyspark.py .
+ENTRYPOINT ["/opt/spark/bin/spark-submit", "/app/my_pyspark.py"]
