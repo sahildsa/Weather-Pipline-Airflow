@@ -50,4 +50,4 @@ if __name__ == "__main__":
     if data:
         output_file = save_data_to_csv(data)
         if output_file:
-            print(f"Data saved to {output_file}")
+            print(output_file)

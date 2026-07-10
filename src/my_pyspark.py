@@ -45,9 +45,10 @@ def write_data(df: pyspark.sql.DataFrame)-> str:
         print(f"Data written successfully to {fpth}")
     except Exception as e:
         print(f"Error writing data to {fpth}: {e}")
-cwd=os.getcwd() #CWD =current working directory
-cwdfolder=os.path.join(cwd, "result") #results folder in the current working directory
-cwdreport=os.path.join(cwdfolder, "sample_data_2026-06-18_09-56-22.csv") #results folder in the current working directory
+# cwd=os.getcwd() #CWD =current working directory
+# cwdfolder=os.path.join(cwd, "result") #results folder in the current working directory
+# cwdreport=os.path.join(cwdfolder, "sample_data_2026-06-18_09-56-22.csv") #results folder in the current working directory
+cwdreport=os.environ.get("INPUT_FILE") #results folder in the current working directory
 df = read_data(spark,cwdreport)
 df.show()
 write_data(df)

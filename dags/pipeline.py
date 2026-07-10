@@ -20,7 +20,19 @@ def weather_pipeline():
         do_xcom_push=True,
     )
 
-    create_data
+    process_data=DockerOperator(
+        task_id="pyspark-worker",
+        image="pyspark-worker:latest",
+        auto_remove='force',
+        mounts=[Mount(source="D:/Airflow_Udemy/result", target="/app/result", type="bind"),Mount(source="D:/Airflow_Udemy/silver_layer", target="/app/silver_layer", type="bind")],
+        environment= {"INPUT_FILE":'{{ ti.xcom_pull(task_ids="api-worker") }}'},
+        docker_url="unix://var/run/docker.sock",
+        network_mode="bridge",
+        do_xcom_push=True,
+    )
+
+
+    create_data >> process_data
 
 
 weather_pipeline()  
