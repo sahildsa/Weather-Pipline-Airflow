@@ -17,9 +17,10 @@ def weather_pipeline():
         mounts=[Mount(source="D:/Airflow_Udemy/result", target="/app/result", type="bind")],
         docker_url="unix://var/run/docker.sock",
         network_mode="bridge",
+        do_xcom_push=True,
     )
 
     create_data
 
 
-weather_pipeline()
+weather_pipeline()  
