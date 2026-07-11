@@ -32,7 +32,7 @@ def write_data(df: pyspark.sql.DataFrame)-> str:
     import os
     cws=os.getcwd() #CWD =current working directory
     cwf =os.path.join(cws, "silver_layer")
-    fpth =os.path.join(cwf, "output.csv") #results folder in the current working directory
+    fpth =os.path.join(cwf, "output") #results folder in the current working directory
     """
     Writes a Spark DataFrame to a CSV file.
 

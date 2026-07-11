@@ -5,6 +5,7 @@ from docker.types import Mount
 
 from airflow.sdk import dag
 from airflow.providers.docker.operators.docker import DockerOperator
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 
 @dag(start_date=dt.datetime(2026, 1, 1), schedule="@daily", catchup=False)
@@ -31,8 +32,23 @@ def weather_pipeline():
         do_xcom_push=True,
     )
 
+    create_table = SQLExecuteQueryOperator(
+        task_id="create_table",
+        conn_id="pipeline_db",
+        sql="""
+            CREATE TABLE IF NOT EXISTS weather_data (
+                id SERIAL PRIMARY KEY,
+                temperature FLOAT,
+                wind_speed FLOAT,
+                relative_humidity FLOAT,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """,
+    )
 
-    create_data >> process_data
+
+    
+    create_data >> process_data >> create_table
 
 
 weather_pipeline()  
